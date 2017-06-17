@@ -19,6 +19,10 @@ def in_range(note, trange):
   if trange[0] >= note_range[0] and trange[0] <= note_range[1]:
     return 1
 
+  #([])
+  if trange[0] <= note_range[0] and trange[1] >= note_range[1]:
+    return 1
+
   if trange[0] > note_range[1]:
     return 2
 
