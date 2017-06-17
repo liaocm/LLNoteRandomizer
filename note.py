@@ -31,9 +31,12 @@ def in_range(note, trange):
 
 
 def avail_location(notes, time, trange=MIN_SPACE):
+  return avail_locationEX(notes, time, MIN_SPACE, MIN_SPACE)
+
+def avail_locationEX(notes, time, ts, te):
   taken = set()
   for note in notes:
-    check = in_range(note, (time-trange, time+trange))
+    check = in_range(note, (time-ts, time+te))
     if check == 1:
       taken.add(note['position'])
     elif check == 2:
@@ -101,7 +104,10 @@ def randomize_remaining_notes(notes, group, mode):
     random_group = notes
 
   for note in random_group:
-    avail_locs = avail_location(notes, note['timing_sec'])
+    if note['effect'] == 3 or note['effect'] == 13:
+      avail_locs = avail_locationEX(notes, note['timing_sec'], MIN_SPACE, note['effect_value']+MIN_SPACE)
+    else:
+      avail_locs = avail_location(notes, note['timing_sec'])
     if not avail_locs:
       # epic fail
       fail = True
